@@ -14,14 +14,20 @@
     <div class="nav-container">
       <div class="top-btn-container">
         <header class="header">To Do List</header>
-        <button id="inboxbtn" class="inboxbtn btn btn-nav btn-active">Inbox</button>
-        <button id="todaybtn" class="todaybtn btn btn-nav">Today</button>
-        <button id="upcomingbtn" class="upcomingbtn btn btn-nav">Upcoming</button>
+        <h1>Home</h1>
       </div>
+      <br>
       <div class="project-container">
-        <header class="header">Projects</header>
-        <button id="addprojectbtn" class="addprojectbtn btn btn-nav">Add Project</button>
-        <div class="projectlist"></div>
+        <h2>Projects</h2>
+        <ul class="project-list" data-projects>
+          <li>Test 1</li>
+          <li>Test 2</li>
+          <li>Test 3</li>
+        </ul>
+        <form action="" data-project-form>
+          <input type="text" name="add-project" id="add-project" placeholder="add new project" data-project-input> 
+          <button class="addbtn" data-add-project-btn>+</button>
+        </form>
       </div>
     </div>
 

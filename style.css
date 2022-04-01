@@ -22,8 +22,6 @@
   background-color: #fff;
 }
 
-
-button {
-  height: 5vh;
-  width: 15vh;
+h1 {
+  font-size: 2rem;
 }

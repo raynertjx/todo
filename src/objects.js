@@ -1,4 +1,4 @@
-function ToDo(title, desc, date, priority) {
+function createTask(title, desc, date, priority) {
   return {
     title: title,
     desc: desc,
@@ -7,11 +7,12 @@ function ToDo(title, desc, date, priority) {
   }
 }
 
-function Project(title) {
+function createProject(name) {
   return {
-    title: title,
-    children: {}
+    id: Date.now().toString(),
+    name: name,
+    tasks: []
   }
 }
 
-export { ToDo, Project }
+export { createTask, createProject }

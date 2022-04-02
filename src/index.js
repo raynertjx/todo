@@ -1,4 +1,5 @@
 import { createTask, createProject } from './objects'
+import { formatDate } from './datetime'
 
 const homeContainer = document.querySelector('[data-home]')
 const projectsContainer = document.querySelector('[data-projects]')
@@ -20,7 +21,9 @@ const taskNameInput = document.querySelector('[data-task-name]')
 const taskDescInput = document.querySelector('[data-task-desc]')
 const taskDateInput = document.querySelector('[data-task-date]')
 const taskPriorityInput = document.querySelector('[data-task-priority]')
+
 const addTaskButton = document.querySelector('[data-add-task-btn]')
+
 
 const LOCAL_STORAGE_PROJECT_KEY = 'task.projects'
 const LOCAL_STORAGE_SELECTED_PROJECT_KEY = 'task.selected.project'
@@ -60,15 +63,29 @@ function renderTasks(project) {
   project.tasks.forEach(task => {
   const newTask = document.importNode(taskTemplate.content, true)
   const outer = newTask.querySelector('div')
+
   const task_name = outer.querySelector('[data-collapsible]')
   const task_details = outer.querySelector('[data-task-details]')
-  const task_checkbox = outer.querySelector('[data-task-complete]') 
-  
-  task_name.textContent = task.name
-  task_details.textContent = task.desc + " " + task.date + " " + task.priority
-  task_checkbox.id = task.id
-  task_checkbox.setAttribute('data-checkbox-project-id', task.project)
+  const task_checkbox = outer.querySelector('[data-task-complete]')
+
+  const task_desc = task_details.querySelector('[data-task-desc]')
+  const editTaskButton = task_details.querySelector('.edit-task-button')
+  const deleteTaskButton = task_details.querySelector('.delete-task-button') 
+
+  const taskModifiers = document.querySelectorAll('.task-modifiers')
+
+  task_name.textContent = task.name + " " + formatDate(task.date)
+  task_desc.textContent = task.desc + " " + formatDate(task.date) + " " + task.priority
+  task_checkbox.id = editTaskButton.id = deleteTaskButton.id = task.id  
+
+  task_checkbox.setAttribute('data-modifier-project-id', task.project)
+  editTaskButton.setAttribute('data-modifier-project-id', task.project)
+  deleteTaskButton.setAttribute('data-modifier-project-id', task.project)
+
   task_checkbox.checked = task.complete
+  if (task.complete) {
+    task_name.classList.add("task-completed")
+  }
   tasksContainer.appendChild(newTask)
   })
 }
@@ -104,10 +121,18 @@ tasksContainer.addEventListener("click", (e) => {
     }
   }
   if (e.target.tagName.toLowerCase() === 'input') {
-    const currentProject = projects.find(project => project.id === e.target.getAttribute('data-checkbox-project-id'))
+    const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
     const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
     currentTask.complete = e.target.checked
-    save()
+    saveAndRender()
+  }
+  if (e.target.tagName.toLowerCase() === 'button') {
+    if (e.target.classList.contains('delete-task-button')) {
+      const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
+      const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
+      currentProject.tasks = currentProject.tasks.filter(task => task !== currentTask)
+      saveAndRender()
+    }
   }
 })
 

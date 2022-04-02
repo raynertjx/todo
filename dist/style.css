@@ -59,6 +59,10 @@
   background-color: #f1f1f1;
 }
 
+.task-completed {
+  text-decoration: line-through;
+}
+
 .hidden {
   display: none;
 }

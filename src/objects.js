@@ -1,9 +1,11 @@
-function createTask(title, desc, date, priority) {
+function createTask(name, desc, date, priority) {
   return {
-    title: title,
+    id: Date.now().toString(),
+    name: name,
     desc: desc,
     date: date,
-    priority: priority
+    priority: priority,
+    complete: false
   }
 }
 

@@ -8,14 +8,29 @@ const projectInput = document.querySelector('[data-project-input]')
 const addProjectButton = document.querySelector('[data-add-project-btn]')
 const projectHeading = document.querySelector('[data-project-heading]')
 
+const openTaskModalButton = document.querySelector('.open-modal-button')
+const closeTaskModalButton = document.querySelector('.close-modal-button')
+const taskModal = document.querySelector('.task-modal')
+
+const tasksContainer = document.querySelector('[data-tasks]')
+const taskTemplate = document.getElementById('task-template')
+
+const addTaskForm = document.querySelector('[data-task-form]')
+const taskNameInput = document.querySelector('[data-task-name]')
+const taskDescInput = document.querySelector('[data-task-desc]')
+const taskDateInput = document.querySelector('[data-task-date]')
+const taskPriorityInput = document.querySelector('[data-task-priority]')
+const addTaskButton = document.querySelector('[data-add-task-btn]')
+
 const LOCAL_STORAGE_PROJECT_KEY = 'task.projects'
 const LOCAL_STORAGE_SELECTED_PROJECT_KEY = 'task.selected.project'
 
 let projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || []
-let selectedProjectID = localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_KEY)
+let selectedProjectID = localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_KEY) || 'home'
 
 function render() {
   clearElement(projectsContainer)
+  clearElement(tasksContainer)
   projects.forEach(project => {
     const li = document.createElement('li');
     li.dataset.projectId = project.id
@@ -30,7 +45,25 @@ function render() {
   if (selectedProjectID == 'home') {
     homeContainer.classList.add("project-active")
     projectHeading.textContent = homeContainer.textContent
+    projects.forEach(project => {
+      renderTasks(project)
+    })
+    return
   }
+  const currentProject = projects.find(project => project.id === selectedProjectID)
+  renderTasks(currentProject)
+}
+
+function renderTasks(project) {
+  project.tasks.forEach(task => {
+  const newTask = document.importNode(taskTemplate.content, true)
+  const outer = newTask.querySelector('div')
+  const task_name = outer.querySelector('button')
+  const task_details = outer.querySelector('div') 
+  task_name.textContent = task.name
+  task_details.textContent = task.desc + " " + task.date + " " + task.priority
+  tasksContainer.appendChild(newTask)
+  })
 }
 
 function save() {
@@ -53,21 +86,79 @@ projectsContainer.addEventListener("click", (e) => {
   saveAndRender()
 })
 
-addProjectForm.addEventListener("click", (e) => {
-  e.preventDefault();
-  console.log('hi')
+tasksContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains('collapsible')) {
+    e.target.classList.toggle("active");
+    let content = e.target.nextElementSibling
+    if (content.style.display === 'block') {
+      content.style.display = 'none'
+    } else {
+      content.style.display = 'block'
+    }
+
+  }
+
+})
+
+addProjectForm.addEventListener("submit", (e) => {
+  e.preventDefault()
   const projectName = projectInput.value
   if (projectName == null || projectName === '') return
-  projectInput.value = null
+  clearForm(projectInput)
   const newProject = createProject(projectName)
   projects.push(newProject)
   saveAndRender()
+})
+
+addTaskForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+  if (!checkForm(addTaskForm)) return
+  const newTask = createTask(taskNameInput.value, taskDescInput.value, taskDateInput.value, taskPriorityInput.value)
+  const currentProject = projects.find(project => project.id === selectedProjectID)
+  currentProject.tasks.push(newTask)
+  saveAndRender()
+  taskModal.close()
+})
+
+openTaskModalButton.addEventListener("click", () => {
+  clearForm(taskNameInput, taskDescInput, taskDateInput, taskPriorityInput)
+  taskModal.showModal()
+})
+
+closeTaskModalButton.addEventListener("click", () => {
+  taskModal.close()
 })
 
 function clearElement(element) {
   homeContainer.classList.remove("project-active")
   while (element.firstChild) {
     element.removeChild(element.firstChild)
+  }
+}
+
+function checkForm(form) {
+  if (form.getElementsByTagName("select")) {
+    let selects = form.getElementsByTagName("select")
+    for (let i = 0; i < selects.length; i++) {
+      if (selects[i].value == "") {
+        alert("Please fill all required fields.");
+        return false;
+      }
+    }
+  } 
+  let inputs = form.getElementsByTagName("input");
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].value == "") {
+      alert("Please fill all required fields.");
+      return false;
+    }
+  }
+  return true;
+}
+
+function clearForm() {
+  for (let i = 0; i < arguments.length; i++) {
+    arguments[i].value = null
   }
 }
 

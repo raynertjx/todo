@@ -20,23 +20,45 @@
       <div class="project-container">
         <h2>Projects</h2>
         <ul class="project-list" data-projects>
-          <li>Test 1</li>
-          <li>Test 2</li>
-          <li>Test 3</li>
         </ul>
         <form action="" data-project-form>
           <input type="text" name="add-project" id="add-project" placeholder="add new project" data-project-input> 
-          <button class="addbtn" data-add-project-btn>+</button>
+          <button class="add-project-button" data-add-project-btn>+</button>
         </form>
       </div>
     </div>
 
     <div class="contents-container">
       <h1 data-project-heading>Home</h1>
+      <button class="button open-modal-button">Add Task</button>
+      <dialog class="task-modal">
+        <h2>Test Modal</h2>
+        <form action="" data-task-form>
+          <input type="text" name="taskname" autocomplete="off" placeholder="Name" data-task-name>
+          <input type="text" name="taskdesc" autocomplete="off" placeholder="Description" data-task-desc>
+          <input type="date" name="taskdate" data-task-date>
+          <select name="taskpriority" data-task-priority>
+            <option value="" selected disabled></option>
+            <option value="!">!</option>
+            <option value="!!">!!</option>
+            <option value="!!!">!!!</option>
+          </select>
+          <button class="add-task-button" data-add-task-btn>Add</button>
+        </form>
+        <button class="button close-modal-button">Close</button>
+      </dialog>
+      <ul class="tasks-list" data-tasks>
+      </ul>
     </div>
 
     <div class="footer-container"></div>
   </div>
+  <template id="task-template">
+    <div class="indiv-task">
+      <button class="collapsible"></button>
+      <div class="indiv-task-details"></div>
+    </div>
+  </template>
   <script src="main.js"></script>
 </body>
 </html>

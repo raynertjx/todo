@@ -26,6 +26,39 @@
   background-color: red;
 }
 
+.task-modal {
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  -ms-transform: translate(-50%,-50%);
+  -moz-transform:translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+.indiv-task-details {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
 h1 {
   font-size: 2rem;
 }

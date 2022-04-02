@@ -30,7 +30,7 @@
 
     <div class="contents-container">
       <h1 data-project-heading>Home</h1>
-      <button class="button open-modal-button">Add Task</button>
+      <button class="button open-modal-button hidden">Add Task</button>
       <dialog class="task-modal">
         <h2>Test Modal</h2>
         <form action="" data-task-form>
@@ -55,8 +55,9 @@
   </div>
   <template id="task-template">
     <div class="indiv-task">
-      <button class="collapsible"></button>
-      <div class="indiv-task-details"></div>
+      <div class="collapsible" data-collapsible></div>
+      <div class="indiv-task-details" data-task-details></div>
+      <input type="checkbox" name="taskcomplete" data-task-complete>
     </div>
   </template>
   <script src="main.js"></script>

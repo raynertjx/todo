@@ -23,7 +23,7 @@
         </ul>
         <form action="" data-project-form>
           <input type="text" name="add-project" id="add-project" placeholder="add new project" data-project-input> 
-          <button class="add-project-button" data-add-project-btn>+</button>
+          <button class="button add-project-button" data-add-project-btn>+</button>
         </form>
       </div>
     </div>
@@ -43,7 +43,7 @@
             <option value="!!">!!</option>
             <option value="!!!">!!!</option>
           </select>
-          <button class="add-task-button" data-add-task-btn>Add</button>
+          <button class="button add-task-button" data-add-task-btn>Add</button>
         </form>
         <button class="button close-modal-button">Close</button>
       </dialog>
@@ -56,8 +56,12 @@
   <template id="task-template">
     <div class="indiv-task">
       <div class="collapsible" data-collapsible></div>
-      <div class="indiv-task-details" data-task-details></div>
-      <input type="checkbox" name="taskcomplete" data-task-complete>
+      <div class="indiv-task-details" data-task-details>
+        <span data-task-desc></span>
+        <button class="button edit-task-button task-modifier">Edit</button>
+        <button class="button delete-task-button task-modifier">Delete</button>
+      </div>
+      <input class="checkbox task-modifier"type="checkbox" name="taskcomplete" data-task-complete>
     </div>
   </template>
   <script src="main.js"></script>

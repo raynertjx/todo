@@ -29,6 +29,7 @@ let projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || []
 let selectedProjectID = localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_KEY) || 'home'
 
 function render() {
+  makeVisible(openTaskModalButton)
   clearElement(projectsContainer)
   clearElement(tasksContainer)
   projects.forEach(project => {
@@ -43,6 +44,7 @@ function render() {
     }
   })
   if (selectedProjectID == 'home') {
+    makeHidden(openTaskModalButton)
     homeContainer.classList.add("project-active")
     projectHeading.textContent = homeContainer.textContent
     projects.forEach(project => {
@@ -58,10 +60,15 @@ function renderTasks(project) {
   project.tasks.forEach(task => {
   const newTask = document.importNode(taskTemplate.content, true)
   const outer = newTask.querySelector('div')
-  const task_name = outer.querySelector('button')
-  const task_details = outer.querySelector('div') 
+  const task_name = outer.querySelector('[data-collapsible]')
+  const task_details = outer.querySelector('[data-task-details]')
+  const task_checkbox = outer.querySelector('[data-task-complete]') 
+  
   task_name.textContent = task.name
   task_details.textContent = task.desc + " " + task.date + " " + task.priority
+  task_checkbox.id = task.id
+  task_checkbox.setAttribute('data-checkbox-project-id', task.project)
+  task_checkbox.checked = task.complete
   tasksContainer.appendChild(newTask)
   })
 }
@@ -95,9 +102,13 @@ tasksContainer.addEventListener("click", (e) => {
     } else {
       content.style.display = 'block'
     }
-
   }
-
+  if (e.target.tagName.toLowerCase() === 'input') {
+    const currentProject = projects.find(project => project.id === e.target.getAttribute('data-checkbox-project-id'))
+    const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
+    currentTask.complete = e.target.checked
+    save()
+  }
 })
 
 addProjectForm.addEventListener("submit", (e) => {
@@ -113,8 +124,8 @@ addProjectForm.addEventListener("submit", (e) => {
 addTaskForm.addEventListener("submit", (e) => {
   e.preventDefault()
   if (!checkForm(addTaskForm)) return
-  const newTask = createTask(taskNameInput.value, taskDescInput.value, taskDateInput.value, taskPriorityInput.value)
   const currentProject = projects.find(project => project.id === selectedProjectID)
+  const newTask = createTask(taskNameInput.value, taskDescInput.value, taskDateInput.value, taskPriorityInput.value, currentProject.id)
   currentProject.tasks.push(newTask)
   saveAndRender()
   taskModal.close()
@@ -128,6 +139,15 @@ openTaskModalButton.addEventListener("click", () => {
 closeTaskModalButton.addEventListener("click", () => {
   taskModal.close()
 })
+
+function makeVisible(element) {
+  element.classList.remove('hidden')
+}
+
+function makeHidden(element) {
+  element.classList.add('hidden')
+}
+
 
 function clearElement(element) {
   homeContainer.classList.remove("project-active")

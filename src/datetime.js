@@ -9,7 +9,7 @@ function todayDate() {
 }
 
 function formatDate(date) {
-  format(new Date(date),"EEE, d MMM")
+  return format(new Date(date),"EEE, d MMM")
 }
 
 export { todayDate, formatDate }

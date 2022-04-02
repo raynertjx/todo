@@ -22,6 +22,14 @@
   background-color: #fff;
 }
 
+.project-active {
+  background-color: red;
+}
+
 h1 {
   font-size: 2rem;
+}
+
+li {
+  border: 1px solid black;
 }

@@ -133,13 +133,15 @@ tasksContainer.addEventListener("click", (e) => {
       content.style.display = 'block'
     }
   }
-  const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
-  const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
   if (e.target.tagName.toLowerCase() === 'input') {
+    const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
+    const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
     currentTask.complete = e.target.checked
     saveAndRender()
   }
   if (e.target.tagName.toLowerCase() === 'button') {
+    const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
+    const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
     if (e.target.classList.contains('delete-task-button')) {
       currentProject.tasks = currentProject.tasks.filter(task => task !== currentTask)
       saveAndRender()

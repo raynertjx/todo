@@ -10,17 +10,25 @@ const addProjectButton = document.querySelector('[data-add-project-btn]')
 const projectHeading = document.querySelector('[data-project-heading]')
 
 const openTaskModalButton = document.querySelector('.open-modal-button')
-const closeTaskModalButton = document.querySelector('.close-modal-button')
-const taskModal = document.querySelector('.task-modal')
+const closeTaskModalButtons = document.querySelectorAll('.close-modal-button')
+
+const addTaskModal = document.querySelector('.add-task-modal')
+const editTaskModal = document.querySelector('.edit-task-modal')
 
 const tasksContainer = document.querySelector('[data-tasks]')
 const taskTemplate = document.getElementById('task-template')
 
-const addTaskForm = document.querySelector('[data-task-form]')
-const taskNameInput = document.querySelector('[data-task-name]')
-const taskDescInput = document.querySelector('[data-task-desc]')
-const taskDateInput = document.querySelector('[data-task-date]')
-const taskPriorityInput = document.querySelector('[data-task-priority]')
+const addTaskForm = document.querySelector('[data-task-form-add]')
+const addTaskNameInput = document.querySelector('[data-task-name-add]')
+const addTaskDescInput = document.querySelector('[data-task-desc-add]')
+const addTaskDateInput = document.querySelector('[data-task-date-add]')
+const addTaskPriorityInput = document.querySelector('[data-task-priority-add]')
+
+const editTaskForm = document.querySelector('[data-task-form-edit]')
+const editTaskNameInput = document.querySelector('[data-task-name-edit]')
+const editTaskDescInput = document.querySelector('[data-task-desc-edit]')
+const editTaskDateInput = document.querySelector('[data-task-date-edit]')
+const editTaskPriorityInput = document.querySelector('[data-task-priority-edit]')
 
 const addTaskButton = document.querySelector('[data-add-task-btn]')
 
@@ -64,18 +72,23 @@ function renderTasks(project) {
   const newTask = document.importNode(taskTemplate.content, true)
   const outer = newTask.querySelector('div')
 
-  const task_name = outer.querySelector('[data-collapsible]')
+  const task_title = outer.querySelector('[data-collapsible]')
   const task_details = outer.querySelector('[data-task-details]')
   const task_checkbox = outer.querySelector('[data-task-complete]')
 
+  const task_name = task_title.querySelector('[data-task-name]')
+  const task_date = task_title.querySelector('[data-task-date]')
+  const task_project = task_title.querySelector('[data-task-project]')
+  
   const task_desc = task_details.querySelector('[data-task-desc]')
   const editTaskButton = task_details.querySelector('.edit-task-button')
   const deleteTaskButton = task_details.querySelector('.delete-task-button') 
 
-  const taskModifiers = document.querySelectorAll('.task-modifiers')
+  task_name.textContent = task.name
+  task_date.textContent = formatDate(task.date)
+  task_project.textContent = project.name
 
-  task_name.textContent = task.name + " " + formatDate(task.date)
-  task_desc.textContent = task.desc + " " + formatDate(task.date) + " " + task.priority
+  task_desc.textContent = task.desc + " " + task.priority
   task_checkbox.id = editTaskButton.id = deleteTaskButton.id = task.id  
 
   task_checkbox.setAttribute('data-modifier-project-id', task.project)
@@ -84,7 +97,7 @@ function renderTasks(project) {
 
   task_checkbox.checked = task.complete
   if (task.complete) {
-    task_name.classList.add("task-completed")
+    task_title.classList.add("task-completed")
   }
   tasksContainer.appendChild(newTask)
   })
@@ -120,24 +133,29 @@ tasksContainer.addEventListener("click", (e) => {
       content.style.display = 'block'
     }
   }
+  const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
+  const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
   if (e.target.tagName.toLowerCase() === 'input') {
-    const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
-    const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
     currentTask.complete = e.target.checked
     saveAndRender()
   }
   if (e.target.tagName.toLowerCase() === 'button') {
     if (e.target.classList.contains('delete-task-button')) {
-      const currentProject = projects.find(project => project.id === e.target.getAttribute('data-modifier-project-id'))
-      const currentTask = currentProject.tasks.find(task => task.id === e.target.id)
       currentProject.tasks = currentProject.tasks.filter(task => task !== currentTask)
       saveAndRender()
+    }
+    else if (e.target.classList.contains('edit-task-button')) {
+      openEditForm(currentTask.id, currentTask.project, currentTask.name, currentTask.desc, currentTask.date, currentTask.priority)
     }
   }
 })
 
 addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault()
+  if (projects.length >= 15) {
+    alert("Maximum number of projects!")
+    return
+  }
   const projectName = projectInput.value
   if (projectName == null || projectName === '') return
   clearForm(projectInput)
@@ -150,19 +168,32 @@ addTaskForm.addEventListener("submit", (e) => {
   e.preventDefault()
   if (!checkForm(addTaskForm)) return
   const currentProject = projects.find(project => project.id === selectedProjectID)
-  const newTask = createTask(taskNameInput.value, taskDescInput.value, taskDateInput.value, taskPriorityInput.value, currentProject.id)
+  const newTask = createTask(addTaskNameInput.value, addTaskDescInput.value, addTaskDateInput.value, addTaskPriorityInput.value, currentProject.id)
   currentProject.tasks.push(newTask)
   saveAndRender()
-  taskModal.close()
+  addTaskModal.close()
 })
+
+editTaskForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+  const currentProject = projects.find(project => project.id === editTaskForm.getAttribute('data-edit-task-project'))
+  const editedTask = currentProject.tasks.find(task => task.id === editTaskForm.id)
+  editTask(editedTask, editTaskNameInput.value, editTaskDescInput.value, editTaskDateInput.value, editTaskPriorityInput.value)
+  saveAndRender()
+  editTaskModal.close()
+}
+)
 
 openTaskModalButton.addEventListener("click", () => {
-  clearForm(taskNameInput, taskDescInput, taskDateInput, taskPriorityInput)
-  taskModal.showModal()
+  clearForm(addTaskNameInput, addTaskDescInput, addTaskDateInput, addTaskPriorityInput)
+  addTaskModal.showModal()
 })
 
-closeTaskModalButton.addEventListener("click", () => {
-  taskModal.close()
+closeTaskModalButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    addTaskModal.close()
+    editTaskModal.close()
+  })
 })
 
 function makeVisible(element) {
@@ -205,6 +236,23 @@ function clearForm() {
   for (let i = 0; i < arguments.length; i++) {
     arguments[i].value = null
   }
+}
+
+function openEditForm(id, project, name, desc, date, priority) {
+  editTaskForm.id = id
+  editTaskForm.setAttribute('data-edit-task-project', project)
+  editTaskNameInput.value = name
+  editTaskDescInput.value = desc
+  editTaskDateInput.value = date
+  editTaskPriorityInput.value = priority
+  editTaskModal.showModal()
+}
+
+function editTask(task, name, desc, date, priority) {
+  task.name = name
+  task.desc = desc
+  task.date = date
+  task.priority = priority
 }
 
 render()

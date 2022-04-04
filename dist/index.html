@@ -41,7 +41,7 @@
             <option value="!!">!!</option>
             <option value="!!!">!!!</option>
           </select>
-          <button class="button add-task-button" data-add-task-btn>Add</button>
+          <button class="button add-task-button">Add</button>
         </form>
         <button class="button close-modal-button">Close</button>
       </dialog>
@@ -57,7 +57,7 @@
             <option value="!!">!!</option>
             <option value="!!!">!!!</option>
           </select>
-          <button class="button save-changes-task-button" data-add-task-btn>Save Changes</button>
+          <button class="button save-changes-task-button">Save Changes</button>
         </form>
         <button class="button close-modal-button">Close</button>
       </dialog>
@@ -81,6 +81,13 @@
       </div>
       <input class="checkbox task-modifier"type="checkbox" name="taskcomplete" data-task-complete>
     </div>
+  </template>
+  <template id="project-template">
+    <li>
+      <span class="project-modifier" data-project-name></span>
+      <button class="button edit-project-button project-modifier">Edit</button>
+      <button class="button delete-project-button project-modifier">Delete</button>
+    </li>
   </template>
   <script src="main.js"></script>
 </body>

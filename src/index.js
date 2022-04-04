@@ -17,6 +17,7 @@ const editTaskModal = document.querySelector('.edit-task-modal')
 
 const tasksContainer = document.querySelector('[data-tasks]')
 const taskTemplate = document.getElementById('task-template')
+const projectTemplate = document.getElementById('project-template')
 
 const addTaskForm = document.querySelector('[data-task-form-add]')
 const addTaskNameInput = document.querySelector('[data-task-name-add]')
@@ -30,9 +31,6 @@ const editTaskDescInput = document.querySelector('[data-task-desc-edit]')
 const editTaskDateInput = document.querySelector('[data-task-date-edit]')
 const editTaskPriorityInput = document.querySelector('[data-task-priority-edit]')
 
-const addTaskButton = document.querySelector('[data-add-task-btn]')
-
-
 const LOCAL_STORAGE_PROJECT_KEY = 'task.projects'
 const LOCAL_STORAGE_SELECTED_PROJECT_KEY = 'task.selected.project'
 
@@ -44,23 +42,24 @@ function render() {
   clearElement(projectsContainer)
   clearElement(tasksContainer)
   projects.forEach(project => {
-    const li = document.createElement('li');
+    const newProject = document.importNode(projectTemplate.content, true)
+    const li = newProject.querySelector('li');
     li.dataset.projectId = project.id
-    li.textContent = project.name
+    const children = li.querySelectorAll('.project-modifier')
+    children.forEach((child) => {
+      child.dataset.projectId = project.id
+    })
+    const project_name = li.querySelector('span')
+    project_name.textContent = project.name
     li.classList.add('indiv-project')
     projectsContainer.appendChild(li)
     if (li.dataset.projectId === selectedProjectID) {
       li.classList.add("project-active") 
-      projectHeading.textContent = li.textContent
+      projectHeading.textContent = project.name
     }
   })
   if (selectedProjectID == 'home') {
-    makeHidden(openTaskModalButton)
-    homeContainer.classList.add("project-active")
-    projectHeading.textContent = homeContainer.textContent
-    projects.forEach(project => {
-      renderTasks(project)
-    })
+    renderHome()
     return
   }
   const currentProject = projects.find(project => project.id === selectedProjectID)
@@ -103,6 +102,16 @@ function renderTasks(project) {
   })
 }
 
+function renderHome() {
+  selectedProjectID = 'home'
+  makeHidden(openTaskModalButton)
+  homeContainer.classList.add("project-active")
+  projectHeading.textContent = homeContainer.textContent
+  projects.forEach(project => {
+    renderTasks(project)
+  })
+}
+
 function save() {
   localStorage.setItem(LOCAL_STORAGE_PROJECT_KEY, JSON.stringify(projects))
   localStorage.setItem(LOCAL_STORAGE_SELECTED_PROJECT_KEY, selectedProjectID)
@@ -119,7 +128,17 @@ homeContainer.addEventListener("click", (e) => {
 })
 
 projectsContainer.addEventListener("click", (e) => {
-  selectedProjectID = e.target.dataset.projectId
+  if (e.target.tagName.toLowerCase() === 'button') {
+    if (e.target.classList.contains('delete-project-button')) {
+      if (confirm("Are you sure you want to delete this project and all its tasks?")) {
+        projects = projects.filter(project => project.id !== e.target.dataset.projectId)
+        renderHome()
+      }
+    }
+  }
+  else {
+    selectedProjectID = e.target.dataset.projectId
+  }
   saveAndRender()
 })
 

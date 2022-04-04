@@ -22,7 +22,7 @@
         <ul class="project-list" data-projects>
         </ul>
         <form action="" data-project-form>
-          <input type="text" name="add-project" id="add-project" placeholder="add new project" data-project-input> 
+          <input type="text" name="add-project" id="add-project" placeholder="add new project" autocomplete="off" data-project-input> 
           <button class="button add-project-button" data-add-project-btn>+</button>
         </form>
       </div>
@@ -31,19 +31,35 @@
     <div class="contents-container">
       <h1 data-project-heading>Home</h1>
       <button class="button open-modal-button hidden">Add Task</button>
-      <dialog class="task-modal">
-        <h2>Test Modal</h2>
-        <form action="" data-task-form>
-          <input type="text" name="taskname" autocomplete="off" placeholder="Name" data-task-name>
-          <input type="text" name="taskdesc" autocomplete="off" placeholder="Description" data-task-desc>
-          <input type="date" name="taskdate" data-task-date>
-          <select name="taskpriority" data-task-priority>
+      <dialog class="add-task-modal modal">
+        <h1 data-modal-heading>Add Task</h1>
+        <form action="" data-task-form-add>
+          <input type="text" name="taskname" autocomplete="off" placeholder="Name" data-task-name-add>
+          <input type="text" name="taskdesc" autocomplete="off" placeholder="Description" data-task-desc-add>
+          <input type="date" name="taskdate" data-task-date-add>
+          <select name="taskpriority" data-task-priority-add>
             <option value="" selected disabled></option>
             <option value="!">!</option>
             <option value="!!">!!</option>
             <option value="!!!">!!!</option>
           </select>
           <button class="button add-task-button" data-add-task-btn>Add</button>
+        </form>
+        <button class="button close-modal-button">Close</button>
+      </dialog>
+      <dialog class="edit-task-modal modal">
+        <h1 data-modal-heading>Edit Task</h1>
+        <form action="" data-task-form-edit>
+          <input type="text" name="taskname" autocomplete="off" placeholder="Name" data-task-name-edit>
+          <input type="text" name="taskdesc" autocomplete="off" placeholder="Description" data-task-desc-edit>
+          <input type="date" name="taskdate" data-task-date-edit>
+          <select name="taskpriority" data-task-priority-edit>
+            <option value="" selected disabled></option>
+            <option value="!">!</option>
+            <option value="!!">!!</option>
+            <option value="!!!">!!!</option>
+          </select>
+          <button class="button save-changes-task-button" data-add-task-btn>Save Changes</button>
         </form>
         <button class="button close-modal-button">Close</button>
       </dialog>
@@ -55,7 +71,11 @@
   </div>
   <template id="task-template">
     <div class="indiv-task">
-      <div class="collapsible" data-collapsible></div>
+      <div class="collapsible" data-collapsible>
+        <span data-task-name></span>
+        <span data-task-date></span>
+        <span data-task-project></span>
+      </div>
       <div class="indiv-task-details" data-task-details>
         <span data-task-desc></span>
         <button class="button edit-task-button task-modifier">Edit</button>

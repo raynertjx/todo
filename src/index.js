@@ -9,6 +9,10 @@ const projectInput = document.querySelector('[data-project-input]')
 const addProjectButton = document.querySelector('[data-add-project-btn]')
 const projectHeading = document.querySelector('[data-project-heading]')
 
+const editProjectModal = document.querySelector('.edit-project-modal')
+const editProjectNameInput = document.querySelector('[data-project-name-edit]')
+const editProjectForm = document.querySelector('[data-project-edit-form]')
+
 const openTaskModalButton = document.querySelector('.open-modal-button')
 const closeTaskModalButtons = document.querySelectorAll('.close-modal-button')
 
@@ -135,6 +139,10 @@ projectsContainer.addEventListener("click", (e) => {
         renderHome()
       }
     }
+    else if (e.target.classList.contains('edit-project-button')) {
+      const currentProject = projects.find(project => project.id === e.target.dataset.projectId)
+      openProjectEditForm(currentProject.id, currentProject.name)
+    }
   }
   else {
     selectedProjectID = e.target.dataset.projectId
@@ -166,7 +174,7 @@ tasksContainer.addEventListener("click", (e) => {
       saveAndRender()
     }
     else if (e.target.classList.contains('edit-task-button')) {
-      openEditForm(currentTask.id, currentTask.project, currentTask.name, currentTask.desc, currentTask.date, currentTask.priority)
+      openEditTaskForm(currentTask.id, currentTask.project, currentTask.name, currentTask.desc, currentTask.date, currentTask.priority)
     }
   }
 })
@@ -205,6 +213,14 @@ editTaskForm.addEventListener("submit", (e) => {
 }
 )
 
+editProjectForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+  const currentProject = projects.find(project => project.id === editProjectForm.getAttribute('data-edit-project-id'))
+  currentProject.name = editProjectNameInput.value
+  saveAndRender()
+  editProjectModal.close()
+})
+
 openTaskModalButton.addEventListener("click", () => {
   clearForm(addTaskNameInput, addTaskDescInput, addTaskDateInput, addTaskPriorityInput)
   addTaskModal.showModal()
@@ -214,6 +230,7 @@ closeTaskModalButtons.forEach((button) => {
   button.addEventListener("click", () => {
     addTaskModal.close()
     editTaskModal.close()
+    editProjectModal.close()
   })
 })
 
@@ -259,7 +276,13 @@ function clearForm() {
   }
 }
 
-function openEditForm(id, project, name, desc, date, priority) {
+function openProjectEditForm(id, name) {
+  editProjectForm.setAttribute('data-edit-project-id', id)
+  editProjectNameInput.value = name
+  editProjectModal.showModal()
+}
+
+function openEditTaskForm(id, project, name, desc, date, priority) {
   editTaskForm.id = id
   editTaskForm.setAttribute('data-edit-task-project', project)
   editTaskNameInput.value = name

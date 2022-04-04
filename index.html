@@ -18,8 +18,15 @@
       <br>
       <div class="project-container">
         <h2>Projects</h2>
-        <ul class="project-list" data-projects>
-        </ul>
+        <ul class="project-list" data-projects></ul>
+        <dialog class="edit-project-modal">
+          <h1>Edit Project</h1>
+          <form action="" data-project-edit-form>
+            <input type="text" name="projectname" autocomplete="off" data-project-name-edit>
+            <button class="button save-task-button">Save</button>
+          </form>
+          <button class="button close-modal-button">Close</button>
+        </dialog>
         <form action="" data-project-form>
           <input type="text" name="add-project" id="add-project" placeholder="add new project" autocomplete="off" data-project-input> 
           <button class="button add-project-button" data-add-project-btn>+</button>
@@ -57,7 +64,7 @@
             <option value="!!">!!</option>
             <option value="!!!">!!!</option>
           </select>
-          <button class="button save-changes-task-button">Save Changes</button>
+          <button class="button save-task-button">Save</button>
         </form>
         <button class="button close-modal-button">Close</button>
       </dialog>

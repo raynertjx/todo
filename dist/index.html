@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,12 +14,15 @@
     <div class="modal"></div>
     <div class="nav-container">
       <div class="top-btn-container">
-        <header class="header">To Do List</header>
-        <h1 data-home data-project-id="home">Home</h1>
+        <h1 class="home-btn-container"data-home data-project-id="home"><span class="material-icons">
+          home
+          </span>Home</h1>
       </div>
       <br>
       <div class="project-container">
-        <h2>Projects</h2>
+        <h2 class="project-header"><span class="material-icons">
+          list
+          </span>Projects</h2>
         <ul class="project-list" data-projects></ul>
         <dialog class="edit-project-modal">
           <h1>Edit Project</h1>
@@ -34,8 +39,10 @@
       </div>
     </div>
     <div class="contents-container">
-      <h1 data-project-heading>Home</h1>
-      <button class="button open-modal-button hidden">Add Task</button>
+      <div class="contents-header">
+        <h1 data-project-heading>Home</h1>
+        <button class="button open-modal-button hidden">Add Task</button>
+      </div>
       <dialog class="add-task-modal modal">
         <h1 data-modal-heading>Add Task</h1>
         <form action="" data-task-form-add>
@@ -71,29 +78,34 @@
       <ul class="tasks-list" data-tasks>
       </ul>
     </div>
-
     <div class="footer-container"></div>
   </div>
   <template id="task-template">
-    <div class="indiv-task">
-      <div class="collapsible" data-collapsible>
-        <span data-task-name></span>
-        <span data-task-date></span>
-        <span data-task-project></span>
-      </div>
-      <div class="indiv-task-details" data-task-details>
-        <span data-task-desc></span>
-        <button class="button edit-task-button task-modifier">Edit</button>
-        <button class="button delete-task-button task-modifier">Delete</button>
-      </div>
+    <li class="indiv-task">
       <input class="checkbox task-modifier"type="checkbox" name="taskcomplete" data-task-complete>
-    </div>
+      <div class="task-box">
+        <div class="collapsible" data-collapsible>
+          <div class="task-name-date">
+            <span data-task-name></span>
+            <span data-task-date></span>
+          </div>
+          <span class="hidden"data-task-project></span>
+        </div>
+        <div class="indiv-task-details" data-task-details>
+          <span data-task-desc></span>
+            <button class="button edit-task-button task-modifier">Edit</button>
+            <button class="button delete-task-button task-modifier">Delete</button>
+        </div>
+      </div>
+    </li>
   </template>
   <template id="project-template">
     <li>
       <span class="project-modifier" data-project-name></span>
-      <button class="button edit-project-button project-modifier">Edit</button>
-      <button class="button delete-project-button project-modifier">Delete</button>
+      <div>
+        <button class="button edit-project-button project-modifier">Edit</button>
+        <button class="button delete-project-button project-modifier">Delete</button>
+      </div>
     </li>
   </template>
   <script src="main.js"></script>

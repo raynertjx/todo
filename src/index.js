@@ -6,7 +6,6 @@ const projectsContainer = document.querySelector('[data-projects]')
 
 const addProjectForm = document.querySelector('[data-project-form]')
 const projectInput = document.querySelector('[data-project-input]')
-const addProjectButton = document.querySelector('[data-add-project-btn]')
 const projectHeading = document.querySelector('[data-project-heading]')
 
 const editProjectModal = document.querySelector('.edit-project-modal')
@@ -73,7 +72,7 @@ function render() {
 function renderTasks(project) {
   project.tasks.forEach(task => {
   const newTask = document.importNode(taskTemplate.content, true)
-  const outer = newTask.querySelector('div')
+  const outer = newTask.querySelector('li')
 
   const task_title = outer.querySelector('[data-collapsible]')
   const task_details = outer.querySelector('[data-task-details]')
@@ -89,7 +88,7 @@ function renderTasks(project) {
 
   task_name.textContent = task.name
   task_date.textContent = formatDate(task.date)
-  task_project.textContent = project.name
+  task_project.textContent = "in " + project.name
 
   task_desc.textContent = task.desc + " " + task.priority
   task_checkbox.id = editTaskButton.id = deleteTaskButton.id = task.id  
@@ -100,7 +99,10 @@ function renderTasks(project) {
 
   task_checkbox.checked = task.complete
   if (task.complete) {
-    task_title.classList.add("task-completed")
+    task_title.classList.add('task-completed')
+  }
+  if (selectedProjectID === 'home') {
+    makeVisible(task_project)
   }
   tasksContainer.appendChild(newTask)
   })
@@ -110,7 +112,7 @@ function renderHome() {
   selectedProjectID = 'home'
   makeHidden(openTaskModalButton)
   homeContainer.classList.add("project-active")
-  projectHeading.textContent = homeContainer.textContent
+  projectHeading.textContent = "Home"
   projects.forEach(project => {
     renderTasks(project)
   })

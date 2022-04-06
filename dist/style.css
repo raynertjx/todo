@@ -1,6 +1,75 @@
 * {
   margin: 0;
   font-size: 16px;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', sans-serif
+}
+
+.home-btn-container, .project-header {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.home-btn-container > span {
+  color: #27adf5;
+}
+
+.project-header > span {
+  color: #d93569;
+}
+
+[data-project-heading] {
+  font-size: 2.5rem;
+  font-weight: 400
+}
+
+.project-list > li:hover, .home-btn-container:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+[data-home] {
+  font-size: 2rem;
+}
+
+.project-header {
+  font-size: 1.5rem;
+  padding-bottom: 0.5em;
+}
+
+.contents-header {
+  display: flex;
+  gap: 1em;
+  padding-bottom: 1em;
+}
+
+.indiv-task {
+  display: flex;
+  align-items: center;
+  gap: 5em;
+}
+
+[data-task-project] {
+  color: #8b8b8b;
+  font-weight: 700;
+  margin-right: 3em;
+}
+
+.tasks-list > li {
+  margin: 1em 0em;
+}
+
+.checkbox {
+  height: 1.5em;
+  width: 1.5em;
+  padding: 5em;
+}
+
+.task-box {
+  display: flex;
+  flex-direction: column;
+  flex: 4
 }
 
 .main-container {
@@ -13,17 +82,19 @@
 .nav-container {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  background-color: #DCDCDC	;
+  flex: 1.25;
+  background-color: #f5f5f5	;
+  padding: 3em 4em;
 }
 
 .contents-container {
-  flex: 5;
+  flex: 6;
   background-color: #fff;
+  padding: 2.5em 4em;
 }
 
-.project-active {
-  background-color: red;
+.project-active > span, .project-active{
+  font-weight: 700;
 }
 
 .modal {
@@ -37,10 +108,12 @@
 }
 
 .collapsible {
-  background-color: #eee;
-  color: #444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  color: #000;
   cursor: pointer;
-  padding: 18px;
   width: 100%;
   border: none;
   text-align: left;
@@ -48,8 +121,23 @@
   font-size: 15px;
 }
 
+.task-name-date{
+  display: flex;
+  gap: 0.25em;
+  flex-direction: column;
+}
+
+[data-task-name] {
+  font-size: 1.5rem;
+}
+
+[data-task-date] {
+  color: #5a5a5a;
+}
+
+
 .active, .collapsible:hover {
-  background-color: #ccc;
+  background-color: #eee;
 }
 
 .indiv-task-details {
@@ -77,6 +165,9 @@ ul {
   padding: 0;
 }
 
-li {
-  border: 1px solid black;
+.indiv-project {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+

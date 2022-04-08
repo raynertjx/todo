@@ -21,10 +21,11 @@
 
 [data-project-heading] {
   font-size: 2.5rem;
-  font-weight: 400
+  font-weight: 400;
+  padding: 0em 0.3em;
 }
 
-.project-list > li:hover, .home-btn-container:hover {
+.project-list > li:hover {
   cursor: pointer;
   opacity: 0.7;
 }
@@ -44,11 +45,6 @@
   padding-bottom: 1em;
 }
 
-.indiv-task {
-  display: flex;
-  align-items: center;
-  gap: 5em;
-}
 
 [data-task-project] {
   color: #8b8b8b;
@@ -56,21 +52,6 @@
   margin-right: 3em;
 }
 
-.tasks-list > li {
-  margin: 1em 0em;
-}
-
-.checkbox {
-  height: 1.5em;
-  width: 1.5em;
-  padding: 5em;
-}
-
-.task-box {
-  display: flex;
-  flex-direction: column;
-  flex: 4
-}
 
 .main-container {
   height: 100vh;
@@ -107,44 +88,59 @@
   transform: translate(-50%,-50%);
 }
 
-.collapsible {
+.indiv-task {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #fff;
-  color: #000;
-  cursor: pointer;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
+  padding: 0.5em 1em;
+  margin: 0.75em 0em;
+  border-radius: 0.3em;
 }
 
-.task-name-date{
+.task-checker {
+  flex: 0.25
+}
+
+.checkbox {
+  height: 1.25em;
+  width: 1.25em;
+  padding: 5em;
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+  flex: 4;
+}
+
+.task-upper-content {
+  display: flex;
+  align-items: center;
+  gap: 2.5em;
+}
+
+.task-upper-content > h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.task-upper-content > p {
+  font-size: 0.9rem;
+  color: #5f5e5e;
+  font-weight: 700;
+}
+
+.task-buttons {
+  display: flex;
+}
+
+.indiv-task:hover {
+  background-color: red;
+}
+
+.task-header {
   display: flex;
   gap: 0.25em;
   flex-direction: column;
-}
-
-[data-task-name] {
-  font-size: 1.5rem;
-}
-
-[data-task-date] {
-  color: #5a5a5a;
-}
-
-
-.active, .collapsible:hover {
-  background-color: #eee;
-}
-
-.indiv-task-details {
-  padding: 0 18px;
-  display: none;
-  overflow: hidden;
-  background-color: #f1f1f1;
 }
 
 .task-completed {
@@ -153,6 +149,24 @@
 
 .hidden {
   display: none;
+}
+
+.low-priority {
+  background-color: #dcecdc;
+  -webkit-box-shadow: 0px 5px 3px 0px #9bb99b;
+  box-shadow: 0px 5px 3px 0px #9bb99b;
+}
+
+.med-priority {
+  background-color: #ebe0c8;
+  -webkit-box-shadow: 0px 5px 3px 0px #ddcdae; 
+  box-shadow: 0px 5px 3px 0px #ccac6b;
+}
+
+.high-priority {
+  background-color: #f1d0d0;
+  -webkit-box-shadow: 0px 5px 3px 0px #af8a8b; 
+  box-shadow: 0px 5px 3px 0px #af8a8b;
 }
 
 h1 {

@@ -13,12 +13,6 @@
   <div class="main-container">
     <div class="modal"></div>
     <div class="nav-container">
-      <div class="top-btn-container">
-        <h1 class="home-btn-container"data-home data-project-id="home"><span class="material-icons">
-          home
-          </span>Home</h1>
-      </div>
-      <br>
       <div class="project-container">
         <h2 class="project-header"><span class="material-icons">
           list
@@ -40,7 +34,7 @@
     </div>
     <div class="contents-container">
       <div class="contents-header">
-        <h1 data-project-heading>Home</h1>
+        <h1 data-project-heading></h1>
         <button class="button open-modal-button hidden">Add Task</button>
       </div>
       <dialog class="add-task-modal modal">
@@ -76,28 +70,29 @@
         <button class="button close-modal-button">Close</button>
       </dialog>
       <ul class="tasks-list" data-tasks>
+        <li data-no-tasks class="hidden">No tasks found. Please add your tasks!</li>
       </ul>
+      <p data-no-projects class="hidden">No projects found. Please add a project!</p>
     </div>
     <div class="footer-container"></div>
   </div>
   <template id="task-template">
-    <li class="indiv-task">
-      <input class="checkbox task-modifier"type="checkbox" name="taskcomplete" data-task-complete>
-      <div class="task-box">
-        <div class="collapsible" data-collapsible>
-          <div class="task-name-date">
-            <span data-task-name></span>
-            <span data-task-date></span>
-          </div>
-          <span class="hidden"data-task-project></span>
-        </div>
-        <div class="indiv-task-details" data-task-details>
-          <span data-task-desc></span>
-            <button class="button edit-task-button task-modifier">Edit</button>
-            <button class="button delete-task-button task-modifier">Delete</button>
-        </div>
+    <div class="indiv-task">
+      <div class="task-checker" data-task-checker>
+        <input class="checkbox task-modifier"type="checkbox" name="taskcomplete" data-task-complete>
       </div>
-    </li>
+      <div class="task-content" data-task-content>
+        <div class="task-upper-content">
+          <h2 data-task-name></h2>
+          <p data-task-date></p>
+        </div>
+        <p data-task-desc></p>
+      </div>
+      <div class="task-buttons" data-task-buttons>
+        <button class="button edit-task-button task-modifier">Edit</button>
+        <button class="button delete-task-button task-modifier">Delete</button>
+      </div>
+    </div>
   </template>
   <template id="project-template">
     <li>
@@ -107,6 +102,9 @@
         <button class="button delete-project-button project-modifier">Delete</button>
       </div>
     </li>
+  </template>
+  <template id="no-tasks-message">
+    <li>No tasks found. Please add your tasks!</li>
   </template>
   <script src="main.js"></script>
 </body>

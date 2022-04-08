@@ -1,8 +1,9 @@
 import { createTask, createProject } from './objects'
 import { formatDate } from './datetime'
 
-const homeContainer = document.querySelector('[data-home]')
 const projectsContainer = document.querySelector('[data-projects]')
+const noProjectsMessage = document.querySelector('[data-no-projects]')
+const noTasksMessage = document.getElementById('no-tasks-message')
 
 const addProjectForm = document.querySelector('[data-project-form]')
 const projectInput = document.querySelector('[data-project-input]')
@@ -37,13 +38,19 @@ const editTaskPriorityInput = document.querySelector('[data-task-priority-edit]'
 const LOCAL_STORAGE_PROJECT_KEY = 'task.projects'
 const LOCAL_STORAGE_SELECTED_PROJECT_KEY = 'task.selected.project'
 
-let projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || []
-let selectedProjectID = localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_KEY) || 'home'
+let general_project = {id: 'general', name: 'General', tasks:[createTask('head to the gym', 'today is chest day', '10/04/2022', '!!!', 'general')]}
+let projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || [general_project]
+let selectedProjectID = localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_KEY) || 'general'
 
 function render() {
   makeVisible(openTaskModalButton)
   clearElement(projectsContainer)
   clearElement(tasksContainer)
+  if (projects === undefined || projects.length == 0) {
+    makeVisible(noProjectsMessage)
+    return
+  }
+  makeHidden(noProjectsMessage)
   projects.forEach(project => {
     const newProject = document.importNode(projectTemplate.content, true)
     const li = newProject.querySelector('li');
@@ -61,60 +68,59 @@ function render() {
       projectHeading.textContent = project.name
     }
   })
-  if (selectedProjectID == 'home') {
-    renderHome()
-    return
-  }
   const currentProject = projects.find(project => project.id === selectedProjectID)
   renderTasks(currentProject)
 }
 
 function renderTasks(project) {
+  if (project.tasks === undefined || project.tasks.length == 0) {
+    const message = document.importNode(noTasksMessage.content, true)
+    const li = message.querySelector('li')
+    tasksContainer.appendChild(li)
+    return
+  }
+  clearElement(tasksContainer)
   project.tasks.forEach(task => {
   const newTask = document.importNode(taskTemplate.content, true)
-  const outer = newTask.querySelector('li')
+  const outer = newTask.querySelector('div')
+  const task_checker = outer.querySelector('[data-task-checker]')
+  const task_content = outer.querySelector('[data-task-content]')
+  const task_buttons = outer.querySelector('[data-task-buttons]')
 
-  const task_title = outer.querySelector('[data-collapsible]')
-  const task_details = outer.querySelector('[data-task-details]')
-  const task_checkbox = outer.querySelector('[data-task-complete]')
+  const task_checkbox = task_checker.querySelector('[data-task-complete]')
 
-  const task_name = task_title.querySelector('[data-task-name]')
-  const task_date = task_title.querySelector('[data-task-date]')
-  const task_project = task_title.querySelector('[data-task-project]')
-  
-  const task_desc = task_details.querySelector('[data-task-desc]')
-  const editTaskButton = task_details.querySelector('.edit-task-button')
-  const deleteTaskButton = task_details.querySelector('.delete-task-button') 
+  const task_name = task_content.querySelector('[data-task-name]')
+  const task_date = task_content.querySelector('[data-task-date]')
+  const task_desc = task_content.querySelector('[data-task-desc]')
+
+  const editTaskButton = task_buttons.querySelector('.edit-task-button')
+  const deleteTaskButton = task_buttons.querySelector('.delete-task-button') 
 
   task_name.textContent = task.name
   task_date.textContent = formatDate(task.date)
-  task_project.textContent = "in " + project.name
 
-  task_desc.textContent = task.desc + " " + task.priority
+  task_desc.textContent = task.desc
   task_checkbox.id = editTaskButton.id = deleteTaskButton.id = task.id  
 
   task_checkbox.setAttribute('data-modifier-project-id', task.project)
   editTaskButton.setAttribute('data-modifier-project-id', task.project)
   deleteTaskButton.setAttribute('data-modifier-project-id', task.project)
 
+  if (task.priority == "!") {
+    outer.classList.add('low-priority')
+  } else if (task.priority == "!!"){
+    outer.classList.add('med-priority')
+  } else {
+    outer.classList.add("high-priority")
+  }
+
   task_checkbox.checked = task.complete
   if (task.complete) {
-    task_title.classList.add('task-completed')
-  }
-  if (selectedProjectID === 'home') {
-    makeVisible(task_project)
+    task_name.classList.add('task-completed')
+    task_date.classList.add('task-completed')
+    task_desc.classList.add('task-completed')
   }
   tasksContainer.appendChild(newTask)
-  })
-}
-
-function renderHome() {
-  selectedProjectID = 'home'
-  makeHidden(openTaskModalButton)
-  homeContainer.classList.add("project-active")
-  projectHeading.textContent = "Home"
-  projects.forEach(project => {
-    renderTasks(project)
   })
 }
 
@@ -128,17 +134,14 @@ function saveAndRender() {
   render()
 } 
 
-homeContainer.addEventListener("click", (e) => {
-  selectedProjectID = e.target.dataset.projectId
-  saveAndRender()
-})
-
 projectsContainer.addEventListener("click", (e) => {
   if (e.target.tagName.toLowerCase() === 'button') {
     if (e.target.classList.contains('delete-project-button')) {
       if (confirm("Are you sure you want to delete this project and all its tasks?")) {
         projects = projects.filter(project => project.id !== e.target.dataset.projectId)
-        renderHome()
+        if (projects.length > 0) {
+          selectedProjectID = projects[0].id
+        }
       }
     }
     else if (e.target.classList.contains('edit-project-button')) {
@@ -192,6 +195,9 @@ addProjectForm.addEventListener("submit", (e) => {
   clearForm(projectInput)
   const newProject = createProject(projectName)
   projects.push(newProject)
+  if (projects.length == 1) {
+    selectedProjectID = projects[0].id
+  }
   saveAndRender()
 })
 
@@ -246,7 +252,6 @@ function makeHidden(element) {
 
 
 function clearElement(element) {
-  homeContainer.classList.remove("project-active")
   while (element.firstChild) {
     element.removeChild(element.firstChild)
   }

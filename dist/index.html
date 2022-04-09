@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,14 +27,23 @@
         </dialog>
         <form action="" data-project-form>
           <input type="text" name="add-project" id="add-project" placeholder="add new project" autocomplete="off" data-project-input> 
-          <button class="button add-project-button" data-add-project-btn>+</button>
+          <button class="button add-project-button" data-add-project-btn><i class="material-icons">
+            add
+            </i></button>
         </form>
       </div>
     </div>
     <div class="contents-container">
-      <div class="contents-header">
+      <div class="contents-header" data-contents-header>
         <h1 data-project-heading></h1>
-        <button class="button open-modal-button hidden">Add Task</button>
+        <div>
+          <button class="button edit-project-button project-modifier"><i class="material-icons">
+            edit_note
+            </i></button>
+          <button class="button delete-project-button project-modifier"><i class="material-icons">
+            delete
+            </i></button>
+        </div>
       </div>
       <dialog class="add-task-modal modal">
         <h1 data-modal-heading>Add Task</h1>
@@ -69,11 +77,14 @@
         </form>
         <button class="button close-modal-button">Close</button>
       </dialog>
-      <ul class="tasks-list" data-tasks>
-        <li data-no-tasks class="hidden">No tasks found. Please add your tasks!</li>
-      </ul>
+      <div class="tasks-list" data-tasks>
+        <p data-no-tasks class="hidden">No tasks found. Please add your tasks!</p>
+      </div>
       <p data-no-projects class="hidden">No projects found. Please add a project!</p>
     </div>
+    <button class="button open-modal-button hidden"><i class="material-icons">
+      add
+      </i></button>
     <div class="footer-container"></div>
   </div>
   <template id="task-template">
@@ -84,27 +95,27 @@
       <div class="task-content" data-task-content>
         <div class="task-upper-content">
           <h2 data-task-name></h2>
-          <p data-task-date></p>
         </div>
         <p data-task-desc></p>
       </div>
+      <p data-task-date></p>
       <div class="task-buttons" data-task-buttons>
-        <button class="button edit-task-button task-modifier">Edit</button>
-        <button class="button delete-task-button task-modifier">Delete</button>
+        <button class="button edit-task-button"><i class="material-icons edit-task-button">
+          edit_note
+          </i></button>
+        <button class="button delete-task-button"><i class="material-icons delete-task-button">
+          delete
+          </i></button>
       </div>
     </div>
   </template>
   <template id="project-template">
     <li>
       <span class="project-modifier" data-project-name></span>
-      <div>
-        <button class="button edit-project-button project-modifier">Edit</button>
-        <button class="button delete-project-button project-modifier">Delete</button>
-      </div>
     </li>
   </template>
   <template id="no-tasks-message">
-    <li>No tasks found. Please add your tasks!</li>
+    <p>No tasks found. Please add your tasks!</p>
   </template>
   <script src="main.js"></script>
 </body>

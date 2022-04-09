@@ -7,6 +7,8 @@ const noTasksMessage = document.getElementById('no-tasks-message')
 
 const addProjectForm = document.querySelector('[data-project-form]')
 const projectInput = document.querySelector('[data-project-input]')
+
+const headerContainer = document.querySelector('[data-contents-header]')
 const projectHeading = document.querySelector('[data-project-heading]')
 
 const editProjectModal = document.querySelector('.edit-project-modal')
@@ -75,8 +77,8 @@ function render() {
 function renderTasks(project) {
   if (project.tasks === undefined || project.tasks.length == 0) {
     const message = document.importNode(noTasksMessage.content, true)
-    const li = message.querySelector('li')
-    tasksContainer.appendChild(li)
+    const p = message.querySelector('p')
+    tasksContainer.appendChild(p)
     return
   }
   clearElement(tasksContainer)
@@ -86,11 +88,11 @@ function renderTasks(project) {
   const task_checker = outer.querySelector('[data-task-checker]')
   const task_content = outer.querySelector('[data-task-content]')
   const task_buttons = outer.querySelector('[data-task-buttons]')
+  const task_date = outer.querySelector('[data-task-date]')
 
   const task_checkbox = task_checker.querySelector('[data-task-complete]')
 
   const task_name = task_content.querySelector('[data-task-name]')
-  const task_date = task_content.querySelector('[data-task-date]')
   const task_desc = task_content.querySelector('[data-task-desc]')
 
   const editTaskButton = task_buttons.querySelector('.edit-task-button')
@@ -135,22 +137,24 @@ function saveAndRender() {
 } 
 
 projectsContainer.addEventListener("click", (e) => {
+  selectedProjectID = e.target.dataset.projectId
+  saveAndRender()
+})
+
+headerContainer.addEventListener("click", (e) => {
   if (e.target.tagName.toLowerCase() === 'button') {
     if (e.target.classList.contains('delete-project-button')) {
       if (confirm("Are you sure you want to delete this project and all its tasks?")) {
-        projects = projects.filter(project => project.id !== e.target.dataset.projectId)
+        projects = projects.filter(project => project.id !== selectedProjectID)
         if (projects.length > 0) {
           selectedProjectID = projects[0].id
         }
       }
     }
     else if (e.target.classList.contains('edit-project-button')) {
-      const currentProject = projects.find(project => project.id === e.target.dataset.projectId)
+      const currentProject = projects.find(project => project.id === selectedProjectID)
       openProjectEditForm(currentProject.id, currentProject.name)
     }
-  }
-  else {
-    selectedProjectID = e.target.dataset.projectId
   }
   saveAndRender()
 })

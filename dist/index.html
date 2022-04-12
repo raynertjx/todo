@@ -17,16 +17,20 @@
           list
           </span>Projects</h2>
         <ul class="project-list" data-projects></ul>
-        <dialog class="edit-project-modal">
-          <h1>Edit Project</h1>
+        <dialog class="edit-project-modal modal">
+          <div class="modal-header">
+            <h1>Edit Project</h1>
+            <button class="button close-modal-button"><button class="button close-modal-button"><span class="material-icons">
+              close
+              </span></button>
+          </div>
           <form action="" data-project-edit-form>
             <input type="text" name="projectname" autocomplete="off" data-project-name-edit>
-            <button class="button save-task-button">Save</button>
+            <div><button class="button save-task-button">Save</button></div>
           </form>
-          <button class="button close-modal-button">Close</button>
         </dialog>
         <form action="" data-project-form>
-          <input type="text" name="add-project" id="add-project" placeholder="add new project" autocomplete="off" data-project-input> 
+          <input type="text" name="add-project" id="add-project"  autocomplete="off" data-project-input> 
           <button class="button add-project-button" data-add-project-btn><i class="material-icons">
             add
             </i></button>
@@ -46,41 +50,81 @@
         </div>
       </div>
       <dialog class="add-task-modal modal">
-        <h1 data-modal-heading>Add Task</h1>
+        <div class="modal-header">
+          <h1 data-modal-heading>Add Task</h1>
+          <button class="button close-modal-button"><span class="material-icons">
+            close
+            </span></button>
+        </div>
         <form action="" data-task-form-add>
-          <input type="text" name="taskname" autocomplete="off" placeholder="Name" data-task-name-add>
-          <input type="text" name="taskdesc" autocomplete="off" placeholder="Description" data-task-desc-add>
-          <input type="date" name="taskdate" data-task-date-add>
-          <select name="taskpriority" data-task-priority-add>
-            <option value="" selected disabled></option>
-            <option value="!">!</option>
-            <option value="!!">!!</option>
-            <option value="!!!">!!!</option>
-          </select>
-          <button class="button add-task-button">Add</button>
+          <div>
+            <label for="taskname">Name:</label>
+            <input type="text" name="taskname" autocomplete="off" data-task-name-add>
+          </div>
+          <div>
+            <label for="taskdesc">Description:</label>
+            <input type="text" name="taskdesc" autocomplete="off"  data-task-desc-add>
+          </div>
+          <div>
+            <div>
+              <label for="taskdate">Date:</label>
+              <input type="date" name="taskdate" data-task-date-add placeholder="">
+            </div>
+            <div>
+              <label for="taskpriority">Priority:</label>
+              <select name="taskpriority" data-task-priority-add>
+                <option value="" selected disabled></option>
+                <option value="!">!</option>
+                <option value="!!">!!</option>
+                <option value="!!!">!!!</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <button class="button add-task-button">Add</button>
+          </div>
         </form>
-        <button class="button close-modal-button">Close</button>
       </dialog>
       <dialog class="edit-task-modal modal">
-        <h1 data-modal-heading>Edit Task</h1>
+        <div class="modal-header">
+          <h1 data-modal-heading>Edit Task</h1>
+          <button class="button close-modal-button"><span class="material-icons">
+            close
+            </span></button>
+        </div>
         <form action="" data-task-form-edit>
-          <input type="text" name="taskname" autocomplete="off" placeholder="Name" data-task-name-edit>
-          <input type="text" name="taskdesc" autocomplete="off" placeholder="Description" data-task-desc-edit>
-          <input type="date" name="taskdate" data-task-date-edit>
-          <select name="taskpriority" data-task-priority-edit>
-            <option value="" selected disabled></option>
-            <option value="!">!</option>
-            <option value="!!">!!</option>
-            <option value="!!!">!!!</option>
-          </select>
-          <button class="button save-task-button">Save</button>
+          <div>
+            <label for="taskname">Name:</label>
+            <input type="text" name="taskname" autocomplete="off" data-task-name-edit>
+          </div>
+          <div>
+            <label for="taskdesc">Description:</label>
+            <input type="text" name="taskdesc" autocomplete="off"  data-task-desc-edit>
+          </div>
+          <div>
+            <div>
+              <label for="taskdate">Date:</label>
+              <input type="date" name="taskdate" data-task-date-edit placeholder="">
+            </div>
+            <div>
+              <label for="taskpriority">Priority:</label>
+              <select name="taskpriority" data-task-priority-edit>
+                <option value="" selected disabled></option>
+                <option value="!">!</option>
+                <option value="!!">!!</option>
+                <option value="!!!">!!!</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <button class="button save-task-button">Save</button>
+          </div>
         </form>
-        <button class="button close-modal-button">Close</button>
       </dialog>
       <div class="tasks-list" data-tasks>
-        <p data-no-tasks class="hidden">No tasks found. Please add your tasks!</p>
+        <p data-no-tasks class="hidden error-message">No tasks found. Please add your tasks!</p>
       </div>
-      <p data-no-projects class="hidden">No projects found. Please add a project!</p>
+      <p data-no-projects class="hidden error-message">No projects found. Please add a project!</p>
     </div>
     <button class="button open-modal-button hidden"><i class="material-icons">
       add
